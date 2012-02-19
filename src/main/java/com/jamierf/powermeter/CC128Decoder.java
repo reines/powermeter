@@ -3,10 +3,14 @@ package com.jamierf.powermeter;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.string.StringDecoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.thoughtworks.xstream.XStream;
 
 class CC128Decoder extends StringDecoder {
+
+	private static final Logger logger = LoggerFactory.getLogger(CC128Decoder.class);
 
 	@SuppressWarnings("unused")
 	private static class Message {
@@ -38,7 +42,10 @@ class CC128Decoder extends StringDecoder {
 		if (xml == null)
 			return null;
 
+		if (logger.isTraceEnabled())
+			logger.trace(xml);
+
 		final Message reading = (Message) xstream.fromXML(xml);
-		return new Reading(reading.tmpr, reading.ch1.watts);
+		return new Reading(reading.sensor, reading.tmpr, reading.ch1.watts);
 	}
 }
