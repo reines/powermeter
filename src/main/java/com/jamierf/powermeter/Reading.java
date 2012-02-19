@@ -27,6 +27,6 @@ public class Reading {
 
 	@Override
 	public String toString() {
-		return String.format("sensor: %d, temp: %.1f, watts: %d", temperature, watts);
+		return String.format("sensor: %d, temp: %.1f, watts: %d", sensor, temperature, watts);
 	}
 }
