@@ -1,0 +1,25 @@
+ul, li {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+#usagegraph {
+	width: 90%;
+	height: 600px;
+	
+	margin: auto;
+}
+
+#status>span.connecting { color: orange; }
+#status>span.connected { color: green; }
+#status>span.disconnected { color: red; }
+
+#summary {
+	margin-bottom: 10px;
+}
+
+#summary>li {
+	display: inline;
+	margin: 5px;
+}

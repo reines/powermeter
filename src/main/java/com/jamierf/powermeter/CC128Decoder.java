@@ -14,17 +14,20 @@ class CC128Decoder extends StringDecoder {
 
 	@SuppressWarnings("unused")
 	private static class Message {
+		// We use strings here for all otherwise 090 will be parsed as octal
+		// rather than decimal, and fail
+
 		private static class Channel {
-			private int watts;
+			private String watts;
 		}
 
 		private String src;
-		private int dsb;
+		private String dsb;
 		private String time;
-		private double tmpr;
-		private int sensor;
-		private int id;
-		private int type;
+		private String tmpr;
+		private String sensor;
+		private String id;
+		private String type;
 		private Channel ch1;
 	}
 
@@ -46,6 +49,6 @@ class CC128Decoder extends StringDecoder {
 			logger.trace(xml);
 
 		final Message reading = (Message) xstream.fromXML(xml);
-		return new Reading(reading.sensor, reading.tmpr, reading.ch1.watts);
+		return new Reading(Integer.parseInt(reading.sensor), Float.parseFloat(reading.tmpr), Integer.parseInt(reading.ch1.watts));
 	}
 }

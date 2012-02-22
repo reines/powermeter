@@ -2,6 +2,7 @@ package com.jamierf.powermeter;
 
 import gnu.io.RXTXLoader;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -14,6 +15,9 @@ import org.jboss.netty.handler.codec.frame.DelimiterBasedFrameDecoder;
 import org.jboss.netty.handler.codec.frame.Delimiters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.jamierf.powermeter.db.Database;
+import com.jamierf.powermeter.web.WebUI;
 
 import de.uniluebeck.itm.nettyrxtx.RXTXChannelConfig;
 import de.uniluebeck.itm.nettyrxtx.RXTXChannelFactory;
@@ -35,17 +39,21 @@ public class PowerMeter {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		final RXTXDeviceAddress address = new RXTXDeviceAddress("/dev/ttyUSB0"); // TODO: CLI parser
-		final PowerMeter meter = new PowerMeter(address);
+		final File databaseFile = new File("readings.db"); // TODO
+
+		final PowerMeter meter = new PowerMeter(address, databaseFile);
 		meter.start();
 	}
 
 	private final RXTXDeviceAddress address;
 	private final ClientBootstrap bootstrap;
+	private final Database db;
+	private final WebUI web;
 	private final AtomicBoolean running;
 
-	public PowerMeter(RXTXDeviceAddress address) {
+	public PowerMeter(RXTXDeviceAddress address, File databaseFile) throws IOException {
 		this.address = address;
 
 		bootstrap = new ClientBootstrap(new RXTXChannelFactory(Executors.newCachedThreadPool()));
@@ -68,6 +76,9 @@ public class PowerMeter {
 		bootstrap.setOption("databits", RXTXChannelConfig.Databits.DATABITS_8);
 		bootstrap.setOption("paritybit", RXTXChannelConfig.Paritybit.NONE);
 
+		db = new Database(databaseFile);
+		web = new WebUI(8989, db);
+
 		running = new AtomicBoolean(false);
 	}
 
@@ -82,10 +93,13 @@ public class PowerMeter {
 		if (!running.get())
 			throw new RuntimeException("PowerMeter not running");
 
+		db.close();
+
 		bootstrap.getFactory().releaseExternalResources();
 	}
 
 	void readingReceived(Reading reading) {
-		System.out.println(reading); // TODO: insert into a database, or something cool...?
+		db.insertReading(reading);
+		web.displayReading(reading);
 	}
 }
