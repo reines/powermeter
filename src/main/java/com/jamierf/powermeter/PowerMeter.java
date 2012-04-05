@@ -7,6 +7,12 @@ import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
@@ -29,7 +35,18 @@ public class PowerMeter {
 
 	private static final int MAX_FRAME_SIZE = 8192;
 
+	private static final String DEFAULT_DB_FILE = "readings.db";
+	private static final String DEFAULT_COM_PORT = "/dev/ttyUSB0";
+
+	private static final Options options;
+
 	static {
+		options = new Options();
+
+		options.addOption("h", false, "Print this help message");
+		options.addOption("i", true, "COM port");
+		options.addOption("d", true, "Database file");
+
 		try {
 			RXTXLoader.load();
 		}
@@ -39,9 +56,18 @@ public class PowerMeter {
 		}
 	}
 
-	public static void main(String[] args) throws IOException {
-		final RXTXDeviceAddress address = new RXTXDeviceAddress("/dev/ttyUSB0"); // TODO: CLI parser
-		final File databaseFile = new File("readings.db"); // TODO
+	public static void main(String[] args) throws IOException, ParseException {
+		final CommandLineParser parser = new GnuParser();
+		final CommandLine params = parser.parse(options, args);
+
+		if (params.hasOption("h")) {
+			final HelpFormatter formatter = new HelpFormatter();
+			formatter.printHelp("MediaManager", options);
+			return;
+		}
+
+		final RXTXDeviceAddress address = new RXTXDeviceAddress(params.getOptionValue("i", DEFAULT_COM_PORT));
+		final File databaseFile = new File(params.getOptionValue("d", DEFAULT_DB_FILE));
 
 		final PowerMeter meter = new PowerMeter(address, databaseFile);
 		meter.start();
