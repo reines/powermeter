@@ -17,17 +17,6 @@
 		<developerConnection>scm:git:git@github.com:reines/powermeter.git</developerConnection>
 	</scm>
 
-	<distributionManagement>
-		<repository>
-			<id>jamierf-release</id>
-			<url>http://robin.jamierf.co.uk:8081/nexus/content/repositories/releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>jamierf-snapshot</id>
-			<url>http://robin.jamierf.co.uk:8081/nexus/content/repositories/snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
-
 	<build>
 		<plugins>
 			<plugin>
