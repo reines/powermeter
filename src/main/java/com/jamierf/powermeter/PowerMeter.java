@@ -1,18 +1,12 @@
 package com.jamierf.powermeter;
 
-import gnu.io.RXTXLoader;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.GnuParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import com.jamierf.powermeter.db.Database;
+import com.jamierf.powermeter.web.WebUI;
+import com.jamierf.rxtx.RXTXLoader;
+import de.uniluebeck.itm.nettyrxtx.RXTXChannelConfig;
+import de.uniluebeck.itm.nettyrxtx.RXTXChannelFactory;
+import de.uniluebeck.itm.nettyrxtx.RXTXDeviceAddress;
+import org.apache.commons.cli.*;
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
@@ -22,12 +16,10 @@ import org.jboss.netty.handler.codec.frame.Delimiters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jamierf.powermeter.db.Database;
-import com.jamierf.powermeter.web.WebUI;
-
-import de.uniluebeck.itm.nettyrxtx.RXTXChannelConfig;
-import de.uniluebeck.itm.nettyrxtx.RXTXChannelFactory;
-import de.uniluebeck.itm.nettyrxtx.RXTXDeviceAddress;
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PowerMeter {
 
