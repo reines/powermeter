@@ -8,6 +8,18 @@
     <name>Powermeter</name>
 	<url>https://github.com/reines/powermeter</url>
 
+    <properties>
+        <rxtx.version>1.1</rxtx.version>
+        <commons-cli.version>1.0</commons-cli.version>
+        <netty.version>3.2.7.Final</netty.version>
+        <netty-rxtx.version>0.3</netty-rxtx.version>
+        <webbit.version>0.3.8</webbit.version>
+        <slf4j.version>1.6.1</slf4j.version>
+        <xstream.version>1.3.1</xstream.version>
+        <sqlite.version>3.7.2</sqlite.version>
+        <gson.version>1.7.1</gson.version>
+    </properties>
+
 	<issueManagement>
 		<url>https://github.com/reines/powermeter/issues</url>
 		<system>GitHub Issues</system>
@@ -49,53 +61,83 @@
 		<dependency>
 			<groupId>com.jamierf</groupId>
 			<artifactId>rxtx</artifactId>
-			<version>1.1</version>
+			<version>${rxtx.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-cli</groupId>
 			<artifactId>commons-cli</artifactId>
-			<version>1.0</version>
+			<version>${commons-cli.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.netty</groupId>
 			<artifactId>netty</artifactId>
-			<version>3.2.7.Final</version>
+			<version>${netty.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>de.uniluebeck.itm.netty-rxtx</groupId>
 			<artifactId>netty-rxtx</artifactId>
-			<version>0.3</version>
+			<version>${netty-rxtx.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.webbitserver</groupId>
 			<artifactId>webbit</artifactId>
-			<version>0.3.8</version>
+			<version>${webbit.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.6.1</version>
+			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.6.1</version>
+			<version>${slf4j.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
-			<version>1.3.1</version>
+			<version>${xstream.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.xerial</groupId>
 			<artifactId>sqlite-jdbc</artifactId>
-			<version>3.7.2</version>
+			<version>${sqlite.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>1.7.1</version>
+			<version>${gson.version}</version>
 		</dependency>
 	</dependencies>
+
+    <repositories>
+        <repository>
+            <id>repository.jboss.org</id>
+            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>itm-maven-repository-releases</id>
+            <url>http://www.itm.uni-luebeck.de/projects/maven/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>itm-maven-repository-snapshots</id>
+            <url>http://www.itm.uni-luebeck.de/projects/maven/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 </project>
